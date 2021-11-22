@@ -95,8 +95,61 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try{
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+        console.log("Calculated properly")
+      }
+      catch(error){
+        console.error('Error somewhere in formatting' );
+        throw(error);
+      }
+      finally{
+        console.log("------------------------");
+      }
     });
+
+    class NewErrorClass extends Error{
+      constructor(message) {
+        super(message); 
+        this.name = "ThereIsError";
+      }
+    }
+
+    function customError(json){
+      let petInfo = JSON.parse(json);
+
+      if(!petInfo.Name){ throw new NewErrorClass("No field -> Name") }
+      if(!petInfo.Age){ throw new NewErrorClass("No field -> Age") }
+      if((typeof petInfo.Age) != "number"){ throw new NewErrorClass("Age is not integer") }
+      if(!petInfo.Breed){ throw new NewErrorClass("No field -> Major") }
+      return petInfo;
+    }
+
+    try{
+      let pet1 = customError('{"Name": "pixie", "Age": 7 , "Breed": "Cat"}');
+      let pet2 = customError('{"Name": "doug",  "Breed": "dog"}');
+    }catch(customError){
+      if(customError instanceof NewErrorClass){
+        console.error("JSON Error: " + customError.message);
+      }else if(customError instanceof SyntaxError){
+        console.error("Syntax Error: " + customError.message);
+      }else{
+        throw(customError);
+      }
+    }
+
+    try{
+      let pet1 = customError('{"Name": "pixie", "Age": 7 , "Breed": "Cat"}');
+      let pet3 = customError('{"Name": "neko",  "Age": "12", "Breed": "mouse"}');
+    }catch(customError){
+      if(customError instanceof NewErrorClass){
+        console.error("JSON Error: " + customError.message);
+      }else if(customError instanceof SyntaxError){
+        console.error("Syntax Error: " + customError.message);
+      }else{
+        throw(customError);
+      }
+    }
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
