@@ -87,6 +87,17 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "0eb432dc2239471397a82a5f8a2e2f8b"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+
+    TrackJS.track('Initial Test');
+  </script>
+
+
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
@@ -239,7 +250,14 @@
       let globalError = new Error("Global Error");
       throw globalError;
     });
+
+    window.onerror = function(message, source, lineno, colno, error) {
+      console.log("Onerror issue logged");
+    };
+
+
   </script>
 </body>
+
 
 </html>
